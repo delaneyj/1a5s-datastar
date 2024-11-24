@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/CAFxX/httpcompression"
 	"github.com/benbjohnson/hashfs"
 	"github.com/delaneyj/toolbelt"
 	"github.com/go-chi/chi/v5"
@@ -17,16 +18,24 @@ import (
 //go:embed static/*
 var staticFS embed.FS
 
-var staticSys = hashfs.NewFS(staticFS)
+var (
+	staticSys             = hashfs.NewFS(staticFS)
+	compressionMiddleware func(http.Handler) http.Handler
+)
 
 func staticPath(path string) string {
 	return "/" + staticSys.HashName("static/"+path)
 }
 
 func RunBlocking(db *toolbelt.Database, port int) toolbelt.CtxErrFunc {
-	return func(ctx context.Context) error {
+	return func(ctx context.Context) (err error) {
+		compressionMiddleware, err = httpcompression.DefaultAdapter()
+		if err != nil {
+			return fmt.Errorf("error creating compression middleware: %w", err)
+		}
+
 		router := chi.NewRouter()
-		router.Use(middleware.Recoverer)
+		router.Use(middleware.Recoverer, compressionMiddleware)
 		router.Handle("/static/*", hashfs.FileServer(staticSys))
 
 		if err := errors.Join(

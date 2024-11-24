@@ -3,6 +3,7 @@ module github.com/starfederation/1a4s-datastar
 go 1.23.3
 
 require (
+	github.com/CAFxX/httpcompression v0.0.9
 	github.com/a-h/templ v0.2.793
 	github.com/benbjohnson/hashfs v0.2.2
 	github.com/delaneyj/toolbelt v0.3.15
@@ -14,7 +15,6 @@ require (
 )
 
 require (
-	github.com/CAFxX/httpcompression v0.0.9 // indirect
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/chewxy/math32 v1.11.1 // indirect
