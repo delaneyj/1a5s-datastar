@@ -15,7 +15,10 @@ import (
 	"zombiezen.com/go/sqlite"
 )
 
-const blockSize = 64
+const (
+	blockSize    = 64
+	pokemonCount = 1024
+)
 
 func setupResultsRoutes(r chi.Router, db *toolbelt.Database) error {
 	rows := []zz.ResultsRes{}
@@ -46,12 +49,17 @@ func setupResultsRoutes(r chi.Router, db *toolbelt.Database) error {
 		resultsRouter.Get("/{blockOffsetRaw}", func(w http.ResponseWriter, r *http.Request) {
 			blockOffsetRaw := chi.URLParam(r, "blockOffsetRaw")
 			blockOffset, err := strconv.Atoi(blockOffsetRaw)
+
+			sse := datastar.NewSSE(w, r)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
+				sse.ConsoleError(err)
 				return
 			}
 
-			sse := datastar.NewSSE(w, r)
+			if blockOffset*blockSize >= pokemonCount {
+				sse.RemoveFragments("#loadNextBlock")
+				return
+			}
 
 			mu.RLock()
 			defer mu.RUnlock()
