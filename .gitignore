@@ -1,0 +1,5 @@
+.task
+*.log
+*_templ.go
+*.sqlite*
+website

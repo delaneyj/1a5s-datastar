@@ -1,0 +1,48 @@
+package web
+
+templ Page() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link href={ staticPath("site.css") } rel="stylesheet" type="text/css"/>
+			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar/bundles/datastar.js"></script>
+			<title>Roundest (Go + Datastar Version)</title>
+		</head>
+		<body>
+			<div class="antialiased bg-gray-950 text-white flex flex-col justify-between min-h-screen min-w-screen border-t-2 border-blue-600">
+				<header class="py-4 px-8">
+					<div class="flex items-center justify-between">
+						<div class="flex items-baseline">
+							<a href="/" class="font-bold text-3xl">
+								round<span class="text-blue-600">est</span>
+								<span class="text-gray-400 font-extralight pl-2 text-2xl">
+									(Go + Datastar)
+								</span>
+							</a>
+						</div>
+						<nav class="flex flex-row items-center gap-8">
+							<a href="/results" class="hover:underline text-lg">
+								Results
+							</a>
+						</nav>
+					</div>
+				</header>
+				<main class="flex-1">
+					{ children... }
+				</main>
+				<footer class="font-light text-center py-3 text-gray-500">
+					<a
+						href="https://github.com/starfederation/1a5s-datastar"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						GitHub
+					</a>
+				</footer>
+			</div>
+		</body>
+	</html>
+}

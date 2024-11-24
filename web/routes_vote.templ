@@ -1,0 +1,56 @@
+package web
+
+import (
+	"fmt"
+	"github.com/starfederation/1a4s-datastar/sql/zz"
+	datastar "github.com/starfederation/datastar/code/go/sdk"
+	"strconv"
+)
+
+const pokemonSpriteURLFormat = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/%d.png`
+
+templ VotePage(left, right *zz.PokemonModel, ids ...int64) {
+	@Page() {
+		<div data-on-load={ datastar.GetSSE("/prefetch") }></div>
+		@voteContainer(left, right)
+	}
+}
+
+templ voteContainer(left, right *zz.PokemonModel) {
+	<div
+		id="vote-container"
+		class="flex justify-center gap-16 items-center min-h-[80vh]"
+		data-store={ templ.JSONString(&PokemonBattle{}) }
+	>
+		@pokemonFragment(left, right)
+		@pokemonFragment(right, left)
+	</div>
+}
+
+templ pokemonFragment(p, other *zz.PokemonModel) {
+	{{
+	idStr := strconv.Itoa(int(p.Id))
+	voteURL := fmt.Sprintf("$upvoteId=%d;$downvoteId=%d;%s", p.Id, other.Id, datastar.PostSSE("/vote"))
+	}}
+	<div id={ idStr } class="flex flex-col items-center gap-4">
+		@pokemonSprite(p.Id, "w-64 h-64")
+		<div class="text-center">
+			<span class="text-gray-500 text-lg">#{ idStr }</span>
+			<h2 class="text-2xl font-bold capitalize">{ p.Name }</h2>
+			<button
+				class="px-8 py-3 bg-blue-500 text-white rounded-lg text-lg font-semibold hover:bg-blue-600 transition-colors"
+				data-on-click={ voteURL }
+			>
+				Vote
+			</button>
+		</div>
+	</div>
+}
+
+templ pokemonSprite(id int64, class string) {
+	<img
+		src={ fmt.Sprintf(pokemonSpriteURLFormat, id) }
+		alt={ `Sprite of Pokemon #${id}` }
+		class={ class }
+	/>
+}

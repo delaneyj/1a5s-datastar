@@ -1,0 +1,74 @@
+# https://taskfile.dev
+
+version: "3"
+
+interval: 100ms
+
+tasks:
+  tools:
+    cmds:
+      - go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+      - go install github.com/delaneyj/toolbelt/sqlc-gen-zombiezen@latest
+      - go install github.com/a-h/templ/cmd/templ@latest
+      - go get github.com/a-h/templ
+      - go install golang.org/x/tools/cmd/goimports@latest
+      - test -f web/gen/css/tailwindcli || wget -O web/gen/css/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-linux-x64
+      - chmod +x web/gen/css/tailwindcli
+
+  css:
+    dir: web
+    sources:
+      - "**/*.templ"
+      - "**/*.md"
+      - "**/*.go"
+    generates:
+      - "static/css/site.css"
+    cmds:
+      - ./gen/css/tailwindcli build -i gen/css/site.css -o static/site.css
+
+  sqlc:
+    dir: sql
+    sources:
+      - "**/*.sql"
+    cmds:
+      - sqlc generate
+      - goimports -w .
+
+  templ:
+    env:
+      TEMPL_EXPERIMENT: rawgo
+    generates:
+      - "**/*_templ.go"
+    sources:
+      - "**/*.templ"
+    cmds:
+      - templ generate .
+
+  site:
+    method: none
+    desc: build and run site
+    sources:
+      - code/go/**/*.templ
+      - code/go/**/*.go
+      - code/go/site/static/**/*
+    generates:
+      - ./website
+    deps:
+      - templ
+      - sqlc
+      - css
+
+    cmds:
+      - go mod tidy
+      - go build -o ./website cmd/site/main.go
+      - ./website
+
+  kill:
+    method: none
+    cmds:
+      - fuser -k 4321/tcp > /dev/null 2>&1 || true
+
+  default:
+    deps:
+      - site
+    silent: true
