@@ -63,6 +63,11 @@ tasks:
       - go build -o ./website cmd/site/main.go
       - ./website
 
+  upx:
+    cmds:
+      - go build -ldflags="-s -w" -o website cmd/site/main.go
+      - upx -9 website
+
   kill:
     method: none
     cmds:
