@@ -6,13 +6,21 @@ interval: 100ms
 
 tasks:
   tools:
+    platforms: [windows, linux, darwin/arm64, darwin/amd64]
     cmds:
       - go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
       - go install github.com/delaneyj/toolbelt/sqlc-gen-zombiezen@latest
       - go install github.com/a-h/templ/cmd/templ@latest
       - go get github.com/a-h/templ
       - go install golang.org/x/tools/cmd/goimports@latest
-      - test -f web/gen/css/tailwindcli || wget -O web/gen/css/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-linux-x64
+      - cmd: test -f code/go/site/tailwindcli || wget -O code/go/site/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-linux-x64
+        platforms: [linux]
+      - cmd: test -f code/go/site/tailwindcli || wget -O code/go/site/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-macos-arm64
+        platforms: [darwin/arm64]
+      - cmd: test -f code/go/site/tailwindcli || wget -O code/go/site/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-macos-x64
+        platforms: [darwin/amd64]
+      - cmd: test -f code/go/site/tailwindcli || wget -O code/go/site/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-windows-x64.exe
+        platforms: [windows]
       - chmod +x web/gen/css/tailwindcli
 
   css:
