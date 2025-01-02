@@ -3,7 +3,6 @@ package web
 import (
 	"fmt"
 	"github.com/starfederation/1a4s-datastar/sql/zz"
-	datastar "github.com/starfederation/datastar/code/go/sdk"
 	"strconv"
 )
 
@@ -11,7 +10,7 @@ const pokemonSpriteURLFormat = `https://raw.githubusercontent.com/PokeAPI/sprite
 
 templ VotePage(left, right *zz.PokemonModel, ids ...int64) {
 	@Page() {
-		<div data-on-load={ datastar.GetSSE("/prefetch") }></div>
+		<div data-on-load="@get('/prefetch')"></div>
 		@voteContainer(left, right)
 	}
 }
@@ -20,7 +19,7 @@ templ voteContainer(left, right *zz.PokemonModel) {
 	<div
 		id="vote-container"
 		class="flex justify-center gap-16 items-center min-h-[80vh]"
-		data-store={ templ.JSONString(&PokemonBattle{}) }
+		data-signals={ templ.JSONString(&PokemonBattle{}) }
 	>
 		@pokemonFragment(left, right)
 		@pokemonFragment(right, left)
@@ -30,7 +29,7 @@ templ voteContainer(left, right *zz.PokemonModel) {
 templ pokemonFragment(p, other *zz.PokemonModel) {
 	{{
 	idStr := strconv.Itoa(int(p.Id))
-	voteURL := fmt.Sprintf("$upvoteId=%d;$downvoteId=%d;%s", p.Id, other.Id, datastar.PostSSE("/vote"))
+	voteURL := fmt.Sprintf("$upvoteId=%d;$downvoteId=%d;@post('/vote')", p.Id, other.Id)
 	}}
 	<div id={ idStr } class="flex flex-col items-center gap-4">
 		@pokemonSprite(p.Id, "w-64 h-64")
@@ -50,7 +49,7 @@ templ pokemonFragment(p, other *zz.PokemonModel) {
 templ pokemonSprite(id int64, class string) {
 	<img
 		src={ fmt.Sprintf(pokemonSpriteURLFormat, id) }
-		alt={ `Sprite of Pokemon #${id}` }
+		alt={ fmt.Sprintf(`Sprite of Pokemon %d`, id) }
 		class={ class }
 	/>
 }
