@@ -12,7 +12,26 @@ tasks:
       - go install github.com/a-h/templ/cmd/templ@latest
       - go get github.com/a-h/templ
       - go install golang.org/x/tools/cmd/goimports@latest
-      - test -f web/gen/css/tailwindcli || wget -O web/gen/css/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-linux-x64
+      - platforms: [linux/amd64]
+        cmd: test -f web/gen/css/tailwindcli || wget -O web/gen/css/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-linux-x64
+
+      - platforms: [linux/arm64]
+        cmd: test -f web/gen/css/tailwindcli || wget -O web/gen/css/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-linux-arm64
+
+      - platforms: [darwin/arm64]
+        cmd: test -f web/gen/css/tailwindcli || wget -O web/gen/css/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-macos-arm64
+
+      - platforms: [darwin/amd64]
+        cmd: test -f web/gen/css/tailwindcli || wget -O web/gen/css/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-macos-x64
+
+      - platforms: [windows]
+        cmd: test -f web/gen/css/tailwindcli || wget -O web/gen/css/tailwindcli https://github.com/dobicinaitis/tailwind-cli-extra/releases/download/v1.7.21/tailwindcss-extra-windows-x64.exe
+
+      - platforms: [openbsd, dragonfly, freebsd, netbsd]
+        cmd: pnpm add tailwindcss @tailwindcss/container-queries @tailwindcss/typography daisyui
+
+      - platforms: [openbsd, dragonfly, freebsd, netbsd]
+        cmd: test -f web/gen/css/tailwindcli || (echo "#!/bin/sh" > web/gen/css/tailwindcli  && echo "tailwindcss $@" >> web/gen/css/tailwindcli)
       - chmod +x web/gen/css/tailwindcli
 
   css:
