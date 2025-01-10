@@ -4,7 +4,25 @@ The [original code](https://github.com/t3dotgg/1app5stacks ) that goes with [thi
 
 # Run
 
-Haven't made a docker container yet but if you have [Task](https://taskfile.dev/#/) and [Go 1.23.3](https://golang.org/) installed you can run the following:
+## With Docker
+
+If you have Docker installed, it takes care of the setup for you in a Dockerized environment, which allows you to get it up and running quickly & easily.
+
+The only requirement is that you have [Docker](https://www.docker.com/products/docker-desktop) installed (you do not need `golang`, `tmpl`, `sqlc` or any other project dependencies installed locally).
+
+In terminal, `cd` to the project directory, and then type:
+
+```
+make dev
+```
+
+The first time you run this command, it may take a bit of time to build the Docker image, and download all of the appropriate packages, and cache them locally.
+
+Then just navigate to `http://localhost:4321` in your browser, and the project will be up and running.
+
+## Without Docker
+
+If you have [Task](https://taskfile.dev/#/) and [Go 1.23.3](https://golang.org/) installed you can run the following:
 
 ```bash
 task tools

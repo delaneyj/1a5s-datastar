@@ -4,7 +4,7 @@ go 1.23.3
 
 require (
 	github.com/CAFxX/httpcompression v0.0.9
-	github.com/a-h/templ v0.2.793
+	github.com/a-h/templ v0.3.819
 	github.com/benbjohnson/hashfs v0.2.2
 	github.com/delaneyj/toolbelt v0.3.15
 	github.com/go-chi/chi/v5 v5.1.0
@@ -40,8 +40,8 @@ require (
 	github.com/ysmood/leakless v0.9.0 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f // indirect
-	golang.org/x/sync v0.9.0 // indirect
-	golang.org/x/sys v0.27.0 // indirect
+	golang.org/x/sync v0.10.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.20.0 // indirect
 	google.golang.org/protobuf v1.35.2 // indirect
 	modernc.org/libc v1.61.2 // indirect
