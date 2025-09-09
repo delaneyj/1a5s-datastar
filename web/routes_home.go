@@ -7,7 +7,7 @@ import (
 	"github.com/delaneyj/toolbelt"
 	"github.com/go-chi/chi/v5"
 	"github.com/starfederation/1a4s-datastar/sql/zz"
-	datastar "github.com/starfederation/datastar/code/go/sdk"
+	"github.com/starfederation/datastar-go/datastar"
 	"zombiezen.com/go/sqlite"
 )
 
