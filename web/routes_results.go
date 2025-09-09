@@ -6,7 +6,7 @@ import (
 	"github.com/delaneyj/toolbelt"
 	"github.com/go-chi/chi/v5"
 	"github.com/starfederation/1a4s-datastar/sql/zz"
-	datastar "github.com/starfederation/datastar/code/go/sdk"
+	"github.com/starfederation/datastar-go/datastar"
 	"zombiezen.com/go/sqlite"
 )
 
@@ -27,7 +27,8 @@ func setupResultsRoutes(r chi.Router, db *toolbelt.Database) error {
 				sse.ConsoleError(err)
 				return
 			}
-			sse.MergeFragmentTempl(resultRows(rows...))
+
+			sse.PatchElementTempl(resultRows(rows...))
 		})
 	})
 	return nil
