@@ -36,6 +36,9 @@ func setupVoteRoutes(r chi.Router, db *toolbelt.Database) error {
 			var (
 				left, right *zz.PokemonModel
 			)
+
+			w.Header().Set("Content-Type", "text/html")
+
 			if err := db.ReadTX(r.Context(), func(tx *sqlite.Conn) (err error) {
 				left, right, err = randomBattle(tx)
 				return err

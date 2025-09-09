@@ -13,6 +13,7 @@ import (
 func setupResultsRoutes(r chi.Router, db *toolbelt.Database) error {
 	r.Route("/results", func(resultsRouter chi.Router) {
 		resultsRouter.Get("/", func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "text/html")
 			ResultsPage().Render(r.Context(), w)
 		})
 
