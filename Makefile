@@ -17,7 +17,7 @@ clean:
 	docker volume rm go-modules
 # Run the development server
 dev: --image-check
-	${DOCKER_RUN} --name ${CONTAINER}-$@ -e DEV_PORT="${DEV_PORT}" -p ${DEV_PORT}:${DEV_PORT} ${IMAGE_NAME} -c 'task -w'
+	${DOCKER_RUN} --name ${CONTAINER}-$@ -e DEV_PORT="${DEV_PORT}" -p ${DEV_PORT}:${DEV_PORT} ${IMAGE_NAME} -c 'task templ sqlc css && task -w'
 # Build the Docker image
 image-build:
 	docker build -f Dockerfile-dev . -t ${IMAGE_NAME} --build-arg TAG=${TAG} --no-cache
